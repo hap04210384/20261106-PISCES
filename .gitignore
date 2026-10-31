@@ -1,0 +1,35 @@
+# Data never enters the repository (licensing; see README "Data availability")
+data/
+results/
+*.tsv
+*.csv
+*.fasta
+*.fna
+*.fa
+*.gz
+*.tar
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.ipynb_checkpoints/
+
+# Build artifacts
+build/
+dist/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Large binaries
+*.o
+*.so
+*.dll
+*.exe
