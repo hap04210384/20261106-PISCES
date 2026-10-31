@@ -75,8 +75,13 @@ int main(int argc, char** argv) {
         mt19937_64 rng(seed);
         FILE* ft = fopen(truth, "w");
         fprintf(ft, "type\tfamA\tfamB\ttarget_support\tgroup_size\n");
+        // unique family pool: each planted pair uses two families never used before
+        vector<int> pool(m.M);
+        for (int i = 0; i < m.M; i++) pool[i] = i;
+        shuffle(pool.begin(), pool.end(), rng);
+        size_t pool_pos = 0;
         auto pick_two = [&](int& a, int& b) {
-            a = (int)(rng() % m.M); do { b = (int)(rng() % m.M); } while (b == a);
+            a = pool[pool_pos++]; b = pool[pool_pos++];
         };
         auto clear_row = [&](int j) { fill(row(m, j), row(m, j) + m.words, 0ULL); };
         auto plant_group = [&](int j, vector<int>& gs) { for (int g : gs) row(m, j)[g >> 6] |= (1ULL << (g & 63)); };

@@ -169,6 +169,7 @@ int main(int argc, char** argv) {
         const char* in = argv[2];
         const char* out = argv[3];
         uint64_t minc = (argc >= 5) ? strtoull(argv[4], 0, 10) : 2;
+        bool dep = (argc >= 6) && strcmp(argv[5], "dep") == 0;  // E-B05 修正案1: include depletion pairs (c11==0, min support >= minc)
         Matrix m;
         if (!load_txt(m, in)) return 1;
         printf("loaded N=%d M=%d words=%d mode=%s\n", m.N, m.M, m.words, pruned ? "pruned" : "full");
@@ -183,9 +184,10 @@ int main(int argc, char** argv) {
             for (int b = a + 1; b < m.M; b++) {
                 if (pruned && m.support[b] < minc) { pruned_pairs++; continue; }  // upper bound min(supA,supB) < minc
                 uint64_t c11 = and_popcnt_rows(ra, m.row(b), m.words);
+                uint64_t supA = m.support[a], supB = m.support[b];
                 total++;
-                if (c11 >= minc) {
-                    uint64_t supA = m.support[a], supB = m.support[b];
+                bool keep = (c11 >= minc) || (dep && c11 == 0 && (supA < supB ? supA : supB) >= minc);
+                if (keep) {
                     fprintf(f, "%s\t%s\t%llu\t%llu\t%llu\t%llu\t%llu\t%llu\n",
                             m.famNames[a].c_str(), m.famNames[b].c_str(),
                             c11, supA, supB,
