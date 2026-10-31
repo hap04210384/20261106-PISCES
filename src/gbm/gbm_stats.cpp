@@ -137,23 +137,43 @@ int main(int argc, char** argv) {
         }
         fclose(fo);
         double el = chrono::duration<double>(chrono::steady_clock::now() - t0).count();
-        auto padj = bh_fdr(pvals);
-        // rewrite with padj
-        FILE* fo2 = fopen(out, "r"); // read back is wasteful; instead build final in one pass below
-        fclose(fo2);
-        // final output with padj sorted by padj
+        auto padj = bh_fdr(pvals);  // screened-set BH (m = number of screened pairs)
+        // conservative all-pairs BH (m = C(M,2)), optional M via argv[4]
+        vector<double> padj_all = padj;
+        bool has_all = argc >= 5;
+        if (has_all) {
+            long long Mfam = atoll(argv[4]);
+            long double mall = (long double)Mfam * (Mfam - 1) / 2.0L;
+            vector<size_t> idx2(rows.size());
+            for (size_t i = 0; i < rows.size(); i++) idx2[i] = i;
+            sort(idx2.begin(), idx2.end(), [&](size_t x, size_t y) { return pvals[x] < pvals[y]; });
+            double prev = 1.0;
+            for (size_t rank = rows.size(); rank >= 1; rank--) {
+                size_t i = idx2[rank - 1];
+                double val = min(prev, (double)((long double)pvals[i] * mall / (long double)rank));
+                padj_all[i] = val;
+                prev = val;
+            }
+        }
         vector<size_t> idx(rows.size());
         for (size_t i = 0; i < rows.size(); i++) idx[i] = i;
         sort(idx.begin(), idx.end(), [&](size_t x, size_t y) { return padj[x] < padj[y]; });
         FILE* ff = fopen(out, "w");
-        fprintf(ff, "famA\tfamB\tc11\tc10\tc01\tc00\todds_ratio\tp_fisher\tpadj_BH\trank\n");
+        if (has_all)
+            fprintf(ff, "famA\tfamB\tc11\tc10\tc01\tc00\todds_ratio\tp_fisher\tpadj_BH_screened\tpadj_BH_allpairs\trank\n");
+        else
+            fprintf(ff, "famA\tfamB\tc11\tc10\tc01\tc00\todds_ratio\tp_fisher\tpadj_BH\trank\n");
         int rank = 0;
         for (size_t i : idx) {
             auto& r = rows[i];
             double or_ = (r.c10 * r.c01 == 0) ? (r.c11 + 0.5) * (r.c00 + 0.5) / ((r.c10 + 0.5) * (r.c01 + 0.5))
                                               : (double)r.c11 * r.c00 / ((double)r.c10 * r.c01);
-            fprintf(ff, "%s\t%s\t%d\t%d\t%d\t%d\t%.6g\t%.6g\t%.6g\t%d\n",
-                    r.A.c_str(), r.B.c_str(), r.c11, r.c10, r.c01, r.c00, or_, pvals[i], padj[i], ++rank);
+            if (has_all)
+                fprintf(ff, "%s\t%s\t%d\t%d\t%d\t%d\t%.6g\t%.6g\t%.6g\t%.6g\t%d\n",
+                        r.A.c_str(), r.B.c_str(), r.c11, r.c10, r.c01, r.c00, or_, pvals[i], padj[i], padj_all[i], ++rank);
+            else
+                fprintf(ff, "%s\t%s\t%d\t%d\t%d\t%d\t%.6g\t%.6g\t%.6g\t%d\n",
+                        r.A.c_str(), r.B.c_str(), r.c11, r.c10, r.c01, r.c00, or_, pvals[i], padj[i], ++rank);
         }
         fclose(ff);
         printf("PAIRS-STATS-OK tested=%zu time=%.2fs -> %s\n", rows.size(), el, out);

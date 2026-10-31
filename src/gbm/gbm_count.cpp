@@ -169,7 +169,9 @@ int main(int argc, char** argv) {
         const char* in = argv[2];
         const char* out = argv[3];
         uint64_t minc = (argc >= 5) ? strtoull(argv[4], 0, 10) : 2;
-        bool dep = (argc >= 6) && strcmp(argv[5], "dep") == 0;  // E-B05 修正案1: include depletion pairs (c11==0, min support >= minc)
+        bool dep = (argc >= 6) && strcmp(argv[5], "dep") == 0;  // E-B05 修正案1+3: depletion pairs (c11==0, min sup>=minc, expected>=minc)
+        bool screen = (argc >= 6) && strcmp(argv[5], "screen") == 0;  // E-B05 修正案4: hypergeom deviation screen (normal p<=1e-3)
+        const double ZSCR = 3.29;
         Matrix m;
         if (!load_txt(m, in)) return 1;
         printf("loaded N=%d M=%d words=%d mode=%s\n", m.N, m.M, m.words, pruned ? "pruned" : "full");
@@ -186,7 +188,22 @@ int main(int argc, char** argv) {
                 uint64_t c11 = and_popcnt_rows(ra, m.row(b), m.words);
                 uint64_t supA = m.support[a], supB = m.support[b];
                 total++;
-                bool keep = (c11 >= minc) || (dep && c11 == 0 && (supA < supB ? supA : supB) >= minc);
+                bool keep;
+                if (screen) {
+                    double n = (double)m.N;
+                    double r1 = (double)supA, r2 = (double)supB;
+                    double E = r1 * r2 / n;
+                    double var = r1 * r2 * (n - r1) * (n - r2) / (n * n * (n - 1.0));
+                    keep = false;
+                    if (var > 0) {
+                        double sd = sqrt(var);
+                        keep = fabsl((long double)c11 - E) >= ZSCR * sd;
+                    }
+                } else {
+                    keep = (c11 >= minc) ||
+                           (dep && c11 == 0 && (supA < supB ? supA : supB) >= minc &&
+                            (long double)supA * (long double)supB / (long double)m.N >= (long double)minc);
+                }
                 if (keep) {
                     fprintf(f, "%s\t%s\t%llu\t%llu\t%llu\t%llu\t%llu\t%llu\n",
                             m.famNames[a].c_str(), m.famNames[b].c_str(),
