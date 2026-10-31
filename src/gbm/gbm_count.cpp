@@ -61,7 +61,7 @@ static bool save_txt(const Matrix& m, const char* path) {
     if (!f) return false;
     fprintf(f, "GBM1 %d %d\n", m.N, m.M);
     for (int j = 0; j < m.M; j++) {
-        fprintf(f, "%s", m.famNames[j].c_str());
+        fprintf(f, "%s ", m.famNames[j].c_str());
         const uint64_t* r = m.row(j);
         for (int i = 0; i < m.N; i++) {
             int bit = (int)((r[i >> 6] >> (i & 63)) & 1ULL);
@@ -164,21 +164,24 @@ int main(int argc, char** argv) {
         printf("SELFTEST-OK N=%d M=%d pairs=%lld\n", N, M, (long long)M * (M - 1) / 2);
         return 0;
     }
-    if (argc >= 2 && strcmp(argv[1], "--count") == 0) {
+    if (argc >= 2 && (strcmp(argv[1], "--count") == 0 || strcmp(argv[1], "--countpruned") == 0)) {
+        bool pruned = strcmp(argv[1], "--countpruned") == 0;
         const char* in = argv[2];
         const char* out = argv[3];
         uint64_t minc = (argc >= 5) ? strtoull(argv[4], 0, 10) : 2;
         Matrix m;
         if (!load_txt(m, in)) return 1;
-        printf("loaded N=%d M=%d words=%d\n", m.N, m.M, m.words);
+        printf("loaded N=%d M=%d words=%d mode=%s\n", m.N, m.M, m.words, pruned ? "pruned" : "full");
         FILE* f = fopen(out, "w");
         if (!f) { fprintf(stderr, "cannot write %s\n", out); return 1; }
         fprintf(f, "famA\tfamB\tc11\tsupA\tsupB\tc10\tc01\tc00\n");
         auto t0 = chrono::steady_clock::now();
-        uint64_t emitted = 0, total = 0;
+        uint64_t emitted = 0, total = 0, pruned_pairs = 0;
         for (int a = 0; a < m.M; a++) {
+            if (pruned && m.support[a] < minc) continue;  // anti-monotonic: sup < minc can never reach minc
             const uint64_t* ra = m.row(a);
             for (int b = a + 1; b < m.M; b++) {
+                if (pruned && m.support[b] < minc) { pruned_pairs++; continue; }  // upper bound min(supA,supB) < minc
                 uint64_t c11 = and_popcnt_rows(ra, m.row(b), m.words);
                 total++;
                 if (c11 >= minc) {
@@ -198,8 +201,8 @@ int main(int argc, char** argv) {
         }
         fclose(f);
         double el = chrono::duration<double>(chrono::steady_clock::now() - t0).count();
-        printf("\nCOUNT-DONE pairs=%llu emitted=%llu minc=%llu time=%.2fs rate=%.1f Mpair/s\n",
-               total, emitted, minc, el, total / el / 1e6);
+        printf("\nCOUNT-DONE pairs=%llu emitted=%llu minc=%llu time=%.2fs rate=%.1f Mpair/s pruned_pairs=%llu\n",
+               total, emitted, minc, el, total / el / 1e6, pruned_pairs);
         return 0;
     }
     fprintf(stderr, "usage: gbm_count --gen|--count|--selftest ...\n");
