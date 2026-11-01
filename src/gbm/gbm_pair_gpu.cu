@@ -20,6 +20,7 @@
 #include <vector>
 #include <algorithm>
 #include <chrono>
+#include <random>
 using namespace std;
 
 #include <cuda_runtime.h>
@@ -147,6 +148,78 @@ __global__ void bmma_count_kernel(const uint32_t* __restrict__ bm,   // families
 
 // ---------------- host side ----------------
 int main(int argc, char** argv) {
+    if (argc >= 2 && strcmp(argv[1], "--bench") == 0) {
+        // --bench N M seed [reps]: in-memory generation (identical to gbm_count --gen:
+        // mt19937_64, density 0.1), padded upload, kernel timed over reps runs.
+        // Avoids multi-GB GBM1 text I/O for population-scale N (E-E02 extension).
+        int N = atoi(argv[2]), M = atoi(argv[3]);
+        uint64_t seed = strtoull(argv[4], 0, 10);
+        int reps = (argc >= 6) ? atoi(argv[5]) : 3;
+        Matrix m;
+        m.N = N; m.M = M;
+        m.words = (N + 63) / 64;
+        m.bits.assign((size_t)M * m.words, 0ULL);
+        m.support.assign(M, 0);
+        mt19937_64 rng(seed);
+        for (int j = 0; j < M; j++)
+            for (int i = 0; i < N; i++) {
+                bool one = (double)rng() / (double)UINT64_MAX < 0.1;
+                if (one) { m.bits[(size_t)j * m.words + (i >> 6)] |= (1ULL << (i & 63)); m.support[j]++; }
+            }
+        const int Npad = ((N + 127) / 128) * 128;
+        const int ldm = Npad / 32;
+        printf("bench N=%d M=%d Npad=%d seed=%llu reps=%d\n", N, M, Npad, seed, reps);
+        vector<uint32_t> hostbm((size_t)M * ldm, 0u);
+        for (int f = 0; f < M; f++) {
+            uint32_t* dst = &hostbm[(size_t)f * ldm];
+            const uint64_t* src = &m.bits[(size_t)f * m.words];
+            const int w32 = (N + 31) / 32;
+            for (int w = 0; w < w32; w++) {
+                uint32_t v = 0;
+                const int w64 = w >> 1;
+                if ((w & 1) == 0) v = (uint32_t)(src[w64] & 0xffffffffULL);
+                else v = (uint32_t)(src[w64] >> 32);
+                dst[w] = v;
+            }
+        }
+        m.bits.clear(); m.bits.shrink_to_fit();
+        uint32_t* dbm = nullptr;
+        CK(cudaMalloc(&dbm, (size_t)M * ldm * sizeof(uint32_t)));
+        CK(cudaMemcpy(dbm, hostbm.data(), (size_t)M * ldm * sizeof(uint32_t), cudaMemcpyHostToDevice));
+        hostbm.clear(); hostbm.shrink_to_fit();
+        uint64_t* dsup = nullptr;
+        CK(cudaMalloc(&dsup, (size_t)M * sizeof(uint64_t)));
+        CK(cudaMemcpy(dsup, m.support.data(), (size_t)M * sizeof(uint64_t), cudaMemcpyHostToDevice));
+        const unsigned long long cap = 1ULL << 26;
+        Triple* dout = nullptr;
+        CK(cudaMalloc(&dout, cap * sizeof(Triple)));
+        unsigned long long* dcnt = nullptr;
+        CK(cudaMalloc(&dcnt, sizeof(unsigned long long)));
+        int* dovf = nullptr;
+        CK(cudaMalloc(&dovf, sizeof(int)));
+        const int T = (M + 7) / 8;
+        dim3 grid(T, T);
+        for (int r = 0; r < reps; r++) {
+            CK(cudaMemset(dcnt, 0, sizeof(unsigned long long)));
+            CK(cudaMemset(dovf, 0, sizeof(int)));
+            auto t0 = chrono::steady_clock::now();
+            bmma_count_kernel<<<grid, 128>>>(dbm, dsup, M, N, Npad, dout, dcnt, cap, dovf, 0);
+            CK(cudaGetLastError());
+            CK(cudaDeviceSynchronize());
+            auto t1 = chrono::steady_clock::now();
+            unsigned long long emitted = 0; int ovf = 0;
+            CK(cudaMemcpy(&emitted, dcnt, sizeof(unsigned long long), cudaMemcpyDeviceToHost));
+            CK(cudaMemcpy(&ovf, dovf, sizeof(int), cudaMemcpyDeviceToHost));
+            printf("rep%d kernel=%.3fs emitted=%llu overflow=%d\n", r,
+                   chrono::duration<double>(t1 - t0).count(), emitted, ovf);
+        }
+        const double chance = 1.005e-3 * ((double)M * (M - 1) / 2.0);
+        printf("chance_expected=%.0f (two-sided z=3.29)\n", chance);
+        size_t freeb = 0, totalb = 0;
+        cudaMemGetInfo(&freeb, &totalb);
+        printf("gpu_mem_free=%.2fGB total=%.2fGB\n", freeb / 1e9, totalb / 1e9);
+        return 0;
+    }
     if (argc >= 2 && strcmp(argv[1], "--count") == 0) {
         const char* in = argv[2];
         const char* outp = argv[3];

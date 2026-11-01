@@ -171,6 +171,12 @@ int main(int argc, char** argv) {
         uint64_t minc = (argc >= 5) ? strtoull(argv[4], 0, 10) : 2;
         bool dep = (argc >= 6) && strcmp(argv[5], "dep") == 0;  // E-B05 修正案1+3: depletion pairs (c11==0, min sup>=minc, expected>=minc)
         bool screen = (argc >= 6) && strcmp(argv[5], "screen") == 0;  // E-B05 修正案4: hypergeom deviation screen (normal p<=1e-3)
+        bool bound = (argc >= 7) && strcmp(argv[6], "bound") == 0;  // exact upper-bound prune (screen mode only)
+        // row-slice for very large N: --count in out minc screen bound a0 a1  (inclusive a0, exclusive a1)
+        int a0 = 0, a1 = 0x7fffffff;
+        if (argc >= 9 && strcmp(argv[6], "bound") == 0) { a0 = atoi(argv[7]); a1 = atoi(argv[8]); }
+        // c11 in [max(0,r1+r2-n), min(r1,r2)] => if max attainable |c11-E| < ZSCR*sd the pair can never pass.
+        // Skips the AND-POPC scan but is byte-identical to the unpruned screen by construction.
         const double ZSCR = 3.29;
         Matrix m;
         if (!load_txt(m, in)) return 1;
@@ -180,11 +186,23 @@ int main(int argc, char** argv) {
         fprintf(f, "famA\tfamB\tc11\tsupA\tsupB\tc10\tc01\tc00\n");
         auto t0 = chrono::steady_clock::now();
         uint64_t emitted = 0, total = 0, pruned_pairs = 0;
-        for (int a = 0; a < m.M; a++) {
+        for (int a = a0; a < a1 && a < m.M; a++) {
             if (pruned && m.support[a] < minc) continue;  // anti-monotonic: sup < minc can never reach minc
             const uint64_t* ra = m.row(a);
             for (int b = a + 1; b < m.M; b++) {
                 if (pruned && m.support[b] < minc) { pruned_pairs++; continue; }  // upper bound min(supA,supB) < minc
+                if (bound && screen) {
+                    const double n = (double)m.N;
+                    const double r1 = (double)m.support[a], r2 = (double)m.support[b];
+                    const double E = r1 * r2 / n;
+                    const double var = r1 * r2 * (n - r1) * (n - r2) / (n * n * (n - 1.0));
+                    if (var > 0) {
+                        const double sd = sqrt(var);
+                        const double lo = (r1 + r2 > n) ? (r1 + r2 - n) : 0.0;
+                        const double dev_ub = fmax(fmin(r1, r2) - E, E - lo);
+                        if (dev_ub < ZSCR * sd) { pruned_pairs++; continue; }
+                    }
+                }
                 uint64_t c11 = and_popcnt_rows(ra, m.row(b), m.words);
                 uint64_t supA = m.support[a], supB = m.support[b];
                 total++;

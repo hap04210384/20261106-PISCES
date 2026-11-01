@@ -1,22 +1,58 @@
-type,support_bin,n,recall
-cond,<=5,58.0,0.0
-cond,6-10,46.0,0.0
-cond,11-20,45.0,0.15555555555555556
-cond,21-40,41.0,0.6097560975609756
-cond,41-80,51.0,0.35294117647058826
-cond,81-160,46.0,0.6086956521739131
-cond,>160,13.0,0.6153846153846154
-cooc,<=5,94.0,0.4787234042553192
-cooc,6-10,44.0,0.5
-cooc,11-20,68.0,0.4411764705882353
-cooc,21-40,61.0,0.47540983606557374
-cooc,41-80,47.0,0.2553191489361702
-cooc,81-160,68.0,0.5588235294117647
-cooc,>160,18.0,0.6111111111111112
-mutex,<=5,61.0,0.0
-mutex,6-10,39.0,0.0
-mutex,11-20,43.0,0.0
-mutex,21-40,51.0,0.0
-mutex,41-80,42.0,0.0
-mutex,81-160,51.0,0.1568627450980392
-mutex,>160,13.0,0.46153846153846156
+type,support_bin,n,recall,experiment
+cooc,<=5,94,1.0000,KPN N=1992 real
+cooc,6-10,44,1.0000,KPN N=1992 real
+cooc,11-20,68,1.0000,KPN N=1992 real
+cooc,21-40,61,1.0000,KPN N=1992 real
+cooc,41-80,47,1.0000,KPN N=1992 real
+cooc,81-160,68,1.0000,KPN N=1992 real
+cooc,>160,18,1.0000,KPN N=1992 real
+cond,<=5,58,0.0000,KPN N=1992 real
+cond,6-10,46,0.0000,KPN N=1992 real
+cond,11-20,45,0.5333,KPN N=1992 real
+cond,21-40,41,1.0000,KPN N=1992 real
+cond,41-80,51,1.0000,KPN N=1992 real
+cond,81-160,46,1.0000,KPN N=1992 real
+cond,>160,13,1.0000,KPN N=1992 real
+mutex,<=5,61,0.0000,KPN N=1992 real
+mutex,6-10,39,0.0000,KPN N=1992 real
+mutex,11-20,43,0.0000,KPN N=1992 real
+mutex,21-40,51,0.0000,KPN N=1992 real
+mutex,41-80,42,0.0000,KPN N=1992 real
+mutex,81-160,51,0.2745,KPN N=1992 real
+mutex,>160,13,1.0000,KPN N=1992 real
+cooc,0-5,96,1.0000,synthetic N=4000
+cooc,6-10,45,1.0000,synthetic N=4000
+cooc,11-20,75,1.0000,synthetic N=4000
+cooc,21-40,58,1.0000,synthetic N=4000
+cooc,41-80,49,1.0000,synthetic N=4000
+cooc,81-inf,77,1.0000,synthetic N=4000
+cond,0-5,54,0.0000,synthetic N=4000
+cond,6-10,45,0.0000,synthetic N=4000
+cond,11-20,42,1.0000,synthetic N=4000
+cond,21-40,45,1.0000,synthetic N=4000
+cond,41-80,51,1.0000,synthetic N=4000
+cond,81-inf,63,1.0000,synthetic N=4000
+mutex,0-5,69,0.0000,synthetic N=4000
+mutex,6-10,34,0.0000,synthetic N=4000
+mutex,11-20,30,0.0000,synthetic N=4000
+mutex,21-40,49,0.0000,synthetic N=4000
+mutex,41-80,49,0.0000,synthetic N=4000
+mutex,81-inf,69,0.0000,synthetic N=4000
+cooc,0-5,96,1.0000,synthetic N=8000
+cooc,6-10,45,1.0000,synthetic N=8000
+cooc,11-20,75,1.0000,synthetic N=8000
+cooc,21-40,58,1.0000,synthetic N=8000
+cooc,41-80,49,1.0000,synthetic N=8000
+cooc,81-inf,77,1.0000,synthetic N=8000
+cond,0-5,54,0.0000,synthetic N=8000
+cond,6-10,45,0.0000,synthetic N=8000
+cond,11-20,42,1.0000,synthetic N=8000
+cond,21-40,45,1.0000,synthetic N=8000
+cond,41-80,51,1.0000,synthetic N=8000
+cond,81-inf,63,1.0000,synthetic N=8000
+mutex,0-5,69,0.0000,synthetic N=8000
+mutex,6-10,34,0.0000,synthetic N=8000
+mutex,11-20,30,0.0000,synthetic N=8000
+mutex,21-40,49,0.0000,synthetic N=8000
+mutex,41-80,49,0.0000,synthetic N=8000
+mutex,81-inf,69,0.0000,synthetic N=8000
