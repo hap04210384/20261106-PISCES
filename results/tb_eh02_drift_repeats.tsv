@@ -1,0 +1,21 @@
+run	engine	config	md5	identical_to_baseline
+1	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+2	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+3	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+4	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+5	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+6	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+7	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+8	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+9	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+10	GPU(gbm_pair_gpu)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+1	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+2	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+3	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+4	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+5	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+6	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+7	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+8	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+9	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
+10	CPU(gbm_count)	--count minc=5 screen(E-B04 config)	b717a6ba85c7ac0374996a1b1b759ee9	yes
