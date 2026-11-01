@@ -1,0 +1,59 @@
+i	type	our_call	pyseer_lmm_p	lmm_call	notes
+0	cooc	1	0.00E+00	1	bad-chisq
+
+1	cooc	1	0.00E+00	1	bad-chisq
+
+2	cooc	1	1.00E+00	FAIL	lrt-filtering-failed,bad-chisq
+3	cooc	1	0.00E+00	1	bad-chisq
+
+4	cooc	1	1.00E+00	FAIL	bad-chisq,lrt-filtering-failed
+5	cooc	1	0.00E+00	1	bad-chisq
+
+6	cooc	1	0.00E+00	1	bad-chisq
+
+7	cooc	1	0.00E+00	1	bad-chisq
+
+8	cooc	1	0.00E+00	1	bad-chisq
+
+9	cooc	1	0.00E+00	1	bad-chisq
+
+50	cond	0	1.35E-01	0	bad-chisq
+
+51	cond	0	5.69E-01	0	bad-chisq
+
+52	cond	1	1.61E-07	1	bad-chisq
+
+53	cond	1	6.19E-04	0	bad-chisq
+
+54	cond	0	2.13E-01	0	bad-chisq
+
+55	cond	1	9.38E-03	0	bad-chisq
+
+56	cond	1	2.39E-05	0	bad-chisq
+
+57	cond	1	1.16E-05	0	bad-chisq
+
+58	cond	1	2.56E-05	0	bad-chisq
+
+59	cond	0	9.19E-01	0	bad-chisq
+
+100	mutex	0	8.71E-01	0	bad-chisq
+
+101	mutex	0	9.38E-01	0	bad-chisq
+
+102	mutex	0	9.37E-01	0	bad-chisq
+
+103	mutex	0	7.91E-01	0	bad-chisq
+
+104	mutex	0	1.40E-01	0	bad-chisq
+
+105	mutex	0	2.78E-01	0	bad-chisq
+
+106	mutex	0	5.29E-01	0	bad-chisq
+
+107	mutex	0	3.46E-01	0	bad-chisq
+
+108	mutex	0	2.13E-01	0	bad-chisq
+
+109	mutex	0	8.93E-01	0	bad-chisq
+
