@@ -1,0 +1,15 @@
+metric	value
+main_M	54590
+774_M	55185
+threshold_main_bonf005	3.355689e-11
+threshold_774_bonf005	3.283717e-11
+matched_families	1979
+main_screened_pairs(minc10)	22155477
+main_sig_conservative	1001112
+main_sig_matched	18651
+774_sig_conservative	1052644
+774_sig_matched	18292
+recall_main_sig_in_774	16492/18651 = 0.8842
+jaccard_sig_matched	8693/28250 = 0.3077
+recall_top100k	16492/18651 = 0.8842 (matched sig pairs only 18651 < 100000, so identical to overall)
+recall_top10k	9750/10000 = 0.9750
