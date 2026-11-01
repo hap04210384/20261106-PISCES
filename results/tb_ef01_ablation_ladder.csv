@@ -1,0 +1,9 @@
+mode,wall_s_median3,bmma_ms,batches,note
+wave_full,0.616,10.91,8,baseline (default byte-budget wave cap)
+wave_bmma_off,0.857,0,0,SIMT per-node fallback: +39% wall (always-BMMA design validated)
+wave_splitk_off,0.623,8.25,8,split-k neutral here (kernel -24% but wall unchanged)
+wave_maskwpb256,0.622,10.79,8,mask-build quota neutral at this scale
+wave_cap64,0.605,12.41,105,smallest waves: scatter 47->20ms offsets mask overhead
+router_full,0.611,0,0,router chose direct/SIMT routing; zero overhead vs static wave
+router_hyst0,0.613,0,0,hysteresis ablation neutral at this scale
+router_linear,0.603,0,0,legacy linear cost model neutral at this scale
