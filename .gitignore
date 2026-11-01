@@ -7,3 +7,5 @@ vendor/
 *.obj
 *.log
 __pycache__/
+*.exp
+*.lib
