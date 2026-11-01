@@ -15,11 +15,11 @@ cd /d %ROOT%\code\src\gbm
 echo [1/4] h5 -> GBM1
 %PY% h5_to_gbm1.py "%H5%" "%GBM1%" || exit /b 1
 
-echo [2/4] all-pairs exact count (minc=5, with depletion rule per E-B05 amendment 1)
-gbm_count.exe --count "%GBM1%" "%PAIRS%" 5 dep || exit /b 1
+echo [2/4] all-pairs exact count (minc=5, hypergeometric deviation screen z>=3.29 per amendment 4)
+gbm_count.exe --count "%GBM1%" "%PAIRS%" 5 screen || exit /b 1
 
-echo [3/4] stats (Fisher two-sided + BH-FDR)
-gbm_stats.exe --pairs "%PAIRS%" "%CAND%" || exit /b 1
+echo [3/4] stats (Fisher two-sided + BH-FDR, both screened-m and allpairs-m conservative)
+gbm_stats.exe --pairs "%PAIRS%" "%CAND%" 54590 || exit /b 1
 
 echo [4/4] done
 dir "%CAND%"
