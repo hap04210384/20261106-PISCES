@@ -1,0 +1,2 @@
+experiment,data,approx_baseline,params,lsh_candidates,significant_pairs_FDR0.05,caught,recall_vs_significant,precision_vs_tested_set,note
+E-B09-dryrun,synthetic N=2000 M=2000 seed314 planted150,MinHash-LSH prefilter,"K=128,B=32,R=4",1119,61,37,0.6066,0.9884,"24 approx-miss candidates identified (exact significant, LSH missed); synthetic density 0.1 unrealistically high, real-data run pending"

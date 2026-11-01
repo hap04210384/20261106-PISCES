@@ -1,0 +1,1 @@
+half1_sig=1220699 half2_sig=1533746 overlap=922675 jaccard=0.5037 rep_rate_h1=0.7559 top100k_overlap=82988

@@ -1,0 +1,5 @@
+N,M,data,time_s,rate_Mpair_s,emitted
+1992,54590,"real KPN (sparse, median sup 2)",28.94,51.5,22155477
+1992,54590,iid null,90.77,16.4,1707990
+4000,54590,iid null,207.28,7.2,1595589
+8000,54590,iid null,308.37,4.8,1544879

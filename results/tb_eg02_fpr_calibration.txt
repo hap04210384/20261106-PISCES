@@ -1,0 +1,8 @@
+padj_BH_screened<0.1: FPR=1.000000
+padj_BH_screened<0.05: FPR=1.000000
+padj_BH_screened<0.01: FPR=1.000000
+padj_BH_screened<0.001: FPR=0.000000
+padj_BH_allpairs<0.1: FPR=0.000000
+padj_BH_allpairs<0.05: FPR=0.000000
+padj_BH_allpairs<0.01: FPR=0.000000
+padj_BH_allpairs<0.001: FPR=0.000000

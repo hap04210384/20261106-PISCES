@@ -1,0 +1,7 @@
+n_pairs=22155477
+allpairs_BH<0.1=2972939
+allpairs_BH<0.05=2685180
+allpairs_BH<0.01=2206781
+allpairs_BH<0.001=1774966
+unique_patterns(m_pattern)=1883197
+pattern_BH<0.05=22155477

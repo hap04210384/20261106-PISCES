@@ -1,0 +1,7 @@
+item,value,note
+source,"PanGBank pangenome id 11756 (s__Klebsiella_pneumoniae, GTDB_refseq collection release 2.0.0)",precomputed PPanGGOLiN pangenome; URL https://pangbank-api.genoscope.cns.fr/pangenomes/11756/file
+genomes_total,2001,
+qc_pass_completeness90_contamination5,1992,E-B01 quality filter
+completeness_mean,99.41,CheckM2 %
+contamination_mean,0.17,CheckM2 %
+manifest_file,data/raw/pangbank/genome_list.json,2001 genome records incl per-genome family counts
