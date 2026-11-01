@@ -1,0 +1,4 @@
+dataset	tested	min_p	bonf_count	bonf_frac	bh05_allpairs_count	bh05_allpairs_frac
+perm20261102	17578255	1.19197e-08	0	0.00e+00	0	0.00e+00
+perm777	17570282	3.79122e-10	0	0.00e+00	0	0.00e+00
+real	29889274		1484134	4.97e-02	4997806	1.67e-01
