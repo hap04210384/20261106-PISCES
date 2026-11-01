@@ -1,0 +1,20 @@
+class,stratum,n,recall_by_LSH
+association,support <=5,13595676,0.1539
+association,support 6-20,3858594,0.0220
+association,support 21-100,2062834,0.0398
+association,support 101-500,1181437,0.0620
+association,support >500,585638,0.8409
+association,jaccard 0-0.05,11686464,0.0000
+association,jaccard 0.05-0.1,4009182,0.0030
+association,jaccard 0.1-0.3,2631112,0.0372
+association,jaccard 0.3-0.6,643294,0.6229
+association,jaccard >0.6,2314127,1.0000
+association,odds-ratio <3,3220797,0.0192
+association,odds-ratio 3-10,1486398,0.0505
+association,odds-ratio 10-100,9256055,0.0318
+association,odds-ratio >=100,7320929,0.3269
+exclusion,support <=5,831226,0.0000
+exclusion,support 6-20,14766,0.0000
+exclusion,support 21-100,15358,0.0000
+exclusion,support 101-500,9946,0.0000
+exclusion,support >500,2,0.0000
