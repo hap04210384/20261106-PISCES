@@ -7,10 +7,11 @@ from collections import Counter, defaultdict
 import hdf5plugin  # noqa: F401
 import h5py
 
-def read_fasta_gz(path):
+def read_fasta(path):
     seqs = {}
     name = None; buf = []
-    with gzip.open(path, 'rt', encoding='utf-8', errors='replace') as f:
+    op = (lambda: gzip.open(path, 'rt', encoding='utf-8', errors='replace')) if path.endswith('.gz') else (lambda: open(path, 'rt', encoding='utf-8', errors='replace'))
+    with op() as f:
         for line in f:
             if line.startswith('>'):
                 if name: seqs[name] = ''.join(buf)
@@ -28,7 +29,7 @@ def main():
     K = int(sys.argv[4]) if len(sys.argv) > 4 else 7
     THR = float(sys.argv[5]) if len(sys.argv) > 5 else 0.3
     print('reading VFDB...')
-    vfdb = read_fasta_gz(vfdb_path)
+    vfdb = read_fasta(vfdb_path)
     vf_names = []
     vf_kmers = []
     index = defaultdict(list)  # kmer -> [vf idx]
