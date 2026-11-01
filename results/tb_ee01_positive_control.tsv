@@ -1,0 +1,15 @@
+combo	geneA	geneB	nA	nB	nAB	odds_ratio_scipy	p_scipy	p_pipeline	padj_bonferroni	pipeline_rank	recalled
+blaCTX-M+aac(6')-Ib-cr	blaCTX-M	aac(6')-Ib-cr	391	98	51	5	1.24e-13	1.23738e-13	7.16e-23	1183251
+	YES
+blaCTX-M+blaTEM-1	blaCTX-M	blaTEM-1B	391	635	186	2.36	2.16e-13	2.16041e-13	1.25e-22	1208615
+	YES
+sul2+dfrA17	sul2	dfrA17	539	166	129	12.2	1.25e-46	1.25395e-46	7.26e-56	295330
+	YES
+sul2+aadA5	sul2	aadA5	539	130	99	10.4	6.28e-34	6.28397e-34	3.64e-43	420490
+	YES
+mcr-1+blaCTX-M	mcr-1.1	blaCTX-M	3	391	1	2.07	0.478	NA	nan	NA	NA
+qnrS1+blaCTX-M	qnrS1	blaCTX-M	290	391	123	3.98	7.91e-23	7.90811e-23	4.58e-32	653393
+	YES
+tet(A)+blaCTX-M	tet(A)	blaCTX-M	634	391	211	3.3	1.06e-24	1.06445e-24	6.16e-34	599752
+	YES
+# recovery: 6/7 combos at Bonferroni (threshold 2.89e-11)

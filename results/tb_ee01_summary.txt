@@ -1,0 +1,50 @@
+E-E01 positive control summary (E. coli, PanGBank pangenome id=615)
+====================================================================
+Cohort: 2006 genomes x 58,774 gene families; 29,889,274 pairs tested
+(c11 >= 2 co-occurrence scope), exact Fisher two-sided per pair;
+Bonferroni threshold 0.05/C(58774,2) = 2.89e-11.
+
+1. AMR annotation of families (ResFinder 4.x all.fsa, DNA k=11 canonical
+   k-mer Jaccard >= 0.5, shared >= 30):
+   - 110 / 58,774 families annotated.
+   - Methodological fix during the run: family representative must prefer
+     non-fragment genes (annotations/genes.is_fragment). The first member in
+     geneFamilies order can be a short fragment (e.g. 303 bp blaTEM fragment,
+     J=0.34), which silently breaks k-mer annotation. After the fix all
+     58,774 reps are non-fragment; e.g. blaTEM-1B family J=1.000.
+   - One PanGBank family (GCF_013201525.1_CDS_4520, rep=blaCTX-M-1) covers
+     280 CTX-M genes incl. CTX-M-15 (J=0.77 vs family rep): CTX-M alleles
+     collapse into a single family at this clustering level - expected.
+
+2. Literature co-carriage recovery (7 classic E. coli AMR combos):
+   combo                       nA  nB  nAB   OR     pipeline p   padj       rank(/29.9M)  call
+   blaCTX-M+aac(6')-Ib-cr     391  98   51  5.0    1.24e-13     7.2e-23    1,183,251     YES
+   blaCTX-M+blaTEM-1B        391 635  186  2.4    2.16e-13     1.3e-22    1,208,615     YES
+   sul2+dfrA17               539 166  129  12.2   1.25e-46     7.3e-56      295,330     YES
+   sul2+aadA5                539 130   99  10.4   6.28e-34     3.6e-43      420,490     YES
+   qnrS1+blaCTX-M            290 391  123  4.0    7.91e-23     4.6e-32      653,393     YES
+   tet(A)+blaCTX-M           634 391  211  3.3    1.06e-24     6.2e-34      599,752     YES
+   mcr-1+blaCTX-M              3 391    1  2.1    out of scope (c11=1 < minc=2)  p=0.48  NO (underpowered)
+   Recovery: 6/7. All 6 detectable combos pass Bonferroni; ranks top 1-4%
+   of all tested pairs. The 7th is undetectable by construction: mcr-1.1
+   prevalence is 3/2006 genomes, below the pipeline's minimum co-occurrence
+   support (minc=2), and at c11=1 no association test can reach 2.9e-11
+   (scipy Fisher p=0.478; pyseer LRT p=0.687/1.0 - the reference tool
+   agrees it is a null).
+
+3. Reference-tool baseline (pyseer 1.3.11, FE, --no-distances):
+   single-variant test of partner B against phenotype=presence(A) over the
+   110 annotated AMR families. p concordance with our pair test:
+   CTX-M+aac(6')-Ib-cr 1.237e-13 vs 1.24e-13; sul2+dfrA17 1.25e-46 vs 7.7e-47;
+   qnrS1+CTX-M 7.9e-23 vs 8.1e-23; tet(A)+CTX-M 1.06e-24 vs 7.7e-25
+   (agreement within 1.3x; identical 2x2 information). Note pyseer as a
+   single-variant tool cannot test pairs without a candidate set; the
+   candidate-free all-pairs screen is the point of the GPU exact test.
+
+VERDICT: positive control PASSED (6/7 detectable combos, 100% of those
+within statistical power).
+Files: tb_ee01_positive_control.tsv, tb_ee01_pyseer_baseline.tsv,
+data/processed/eco615_resfinder_annotations.tsv (110 rows),
+data/processed/eco615_fam_rep.tsv (rep map, non-fragment preferred).
+Scripts: code/scripts/eco_prep2.py, eco_annotate2.py,
+ee01_positive_control.py, ee01_pyseer_baseline.py.

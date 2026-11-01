@@ -1,0 +1,15 @@
+combo	direction	phenotype_gene	partner_gene	n_pheno	pyseer_lrt_p	pyseer_filter_p	pyseer_beta	runtime
+blaCTX-M+aac(6')-Ib-cr	A->B	blaCTX-M	aac(6')-Ib-cr	391	1.24E-13	7.40E-17	1.61E+00	31.8s
+blaCTX-M+aac(6')-Ib-cr	B->A	aac(6')-Ib-cr	blaCTX-M	98	1.24E-13	7.40E-17	1.61E+00	12.5s
+blaCTX-M+blaTEM-1	A->B	blaCTX-M	blaTEM-1B	391	1.83E-13	4.68E-14	8.57E-01	12.4s
+blaCTX-M+blaTEM-1	B->A	blaTEM-1B	blaCTX-M	635	1.83E-13	4.68E-14	8.57E-01	11.1s
+sul2+dfrA17	A->B	sul2	dfrA17	539	7.71E-47	1.04E-53	2.50E+00	9.9s
+sul2+dfrA17	B->A	dfrA17	sul2	166	7.71E-47	1.04E-53	2.50E+00	11.4s
+sul2+aadA5	A->B	sul2	aadA5	539	4.18E-34	2.94E-39	2.34E+00	9.8s
+sul2+aadA5	B->A	aadA5	sul2	130	4.18E-34	2.94E-39	2.34E+00	12.3s
+mcr-1+blaCTX-M	A->B	mcr-1	blaCTX-M	3	6.87E-01	5.45E-01	9.08E-01	15.5s
+mcr-1+blaCTX-M	B->A	blaCTX-M	mcr-1	391	1.00E+00	5.45E-01	9.08E-01	12.0s
+qnrS1+blaCTX-M	A->B	qnrS1	blaCTX-M	290	8.14E-23	1.67E-26	1.38E+00	11.1s
+qnrS1+blaCTX-M	B->A	blaCTX-M	qnrS1	391	8.14E-23	1.67E-26	1.38E+00	12.1s
+tet(A)+blaCTX-M	A->B	tet(A)	blaCTX-M	634	7.72E-25	3.04E-26	1.19E+00	10.4s
+tet(A)+blaCTX-M	B->A	blaCTX-M	tet(A)	391	7.72E-25	3.04E-26	1.19E+00	11.9s
