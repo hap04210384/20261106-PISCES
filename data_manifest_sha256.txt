@@ -1,0 +1,10 @@
+# Derived-data checksum manifest (E-H04)
+# Source pangenomes are NOT redistributed (provider terms); see README "Data availability".
+# Rebuild inputs from the public source, then verify against these SHA-256 values.
+file	bytes	sha256	rebuilt_from
+kpn_gbm1.txt	110120190	f39124df52a962dc703a97514f7cdb014ee69417d099d7d774cab3935d1d1aca	PanGBank K. pneumoniae pangenome (public download, see README)
+kpn_gbm1_qc.txt	109628880	06b346ca88daaaf69c77db40c1155016ac6ff41d978a0a4603d3ac5dc63ef6c2	PanGBank K. pneumoniae pangenome (public download, see README)
+kpn_planted1000.txt	109628880	85ddffd86feed1197021f6d0fd1c98ccc810926c1f4936ac8e132d80382da8d0	PanGBank K. pneumoniae pangenome (public download, see README)
+kpn_planted1000_truth.tsv	42350	38682dd8f347b026033fde3e23de52cea5de2629d15d4fd87cdd055632b80686	PanGBank K. pneumoniae pangenome (public download, see README)
+kpn_planted1000_cand.tsv	1837971136	9f57ce3dc75196650f2d35314b51128e8ee90f0281ee627cec0ee6ee6aeb73cd	PanGBank K. pneumoniae pangenome (public download, see README)
+kpn_pairs.tsv	1052522330	acd3caca1eb8d122dbd0c7a94bbf1fc55f5582d90631d96e747bfcf2cab79b41	PanGBank K. pneumoniae pangenome (public download, see README)

@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build engines (g++, AVX2)
+        run: |
+          mkdir -p bin
+          g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_count src/gbm/gbm_count.cpp
+          g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_stats src/gbm/gbm_stats.cpp
+          g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_sim    src/gbm/gbm_sim.cpp
+          g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_approx src/gbm/gbm_approx.cpp
+      - name: Smoke test
+        run: python3 tests/smoke_test.py bin
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build engines (MSVC, AVX2)
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          mkdir bin
+          cl /O2 /EHsc /arch:AVX2 /DNDEBUG /std:c++17 /Fe:bin\gbm_count.exe src\gbm\gbm_count.cpp
+          cl /O2 /EHsc /arch:AVX2 /DNDEBUG /std:c++17 /Fe:bin\gbm_stats.exe src\gbm\gbm_stats.cpp
+          cl /O2 /EHsc /arch:AVX2 /DNDEBUG /std:c++17 /Fe:bin\gbm_sim.exe src\gbm\gbm_sim.cpp
+          cl /O2 /EHsc /arch:AVX2 /DNDEBUG /std:c++17 /Fe:bin\gbm_approx.exe src\gbm\gbm_approx.cpp
+      - name: Smoke test
+        run: python tests/smoke_test.py bin
