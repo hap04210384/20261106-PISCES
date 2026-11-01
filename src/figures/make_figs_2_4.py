@@ -26,10 +26,10 @@ LS = {"cooc": "-", "cond": "--", "mutex": ":"}
 
 # ---------------- Fig 2: scaling ----------------
 N = [1992, 4000, 8000]
-cpu = [28.94, 46.78, 90.55]
-gpu = [0.677, 0.693, 0.696]
-cpu_rate = [51.5, 31.9, 16.5]
-gpu_rate = [1.49e9 / 0.677 / 1e6, 1.49e9 / 0.693 / 1e6, 1.49e9 / 0.696 / 1e6]
+cpu = [32.0, 46.78, 90.55]
+gpu = [0.702, 0.693, 0.696]
+cpu_rate = [46.6, 31.9, 16.5]
+gpu_rate = [1.49e9 / 0.702 / 1e6, 1.49e9 / 0.693 / 1e6, 1.49e9 / 0.696 / 1e6]
 
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(183 * MM, 62 * MM))
 a1.plot(N, cpu, "o-", color=C["cpu"], lw=1.0, ms=3, label="CPU (AVX2, 1 core)")
@@ -39,7 +39,7 @@ a1.set_xlabel("Genomes N (M = 54,590 families)")
 a1.set_ylabel("Wall time (s), log scale")
 a1.set_xticks(N)
 a1.legend(loc="center right", fontsize=6)
-for x, y, s in zip(N, cpu, gpu):
+for x, y in zip(N, gpu):
     a1.annotate(f"{y:.2f} s", (x, y), textcoords="offset points", xytext=(-2, -11), fontsize=5.5, color=C["gpu"], ha="right")
 for x, y in zip(N, cpu):
     a1.annotate(f"{y:.1f} s", (x, y), textcoords="offset points", xytext=(-2, 5), fontsize=5.5, color=C["cpu"], ha="right")
