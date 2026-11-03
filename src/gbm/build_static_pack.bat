@@ -2,7 +2,7 @@
 rem static-runtime rebuild of all portable exes into pack bin dir
 cd /d %~dp0
 call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" >nul
-set OUT=%~dp0..\..\..\xgpu_run\bin
+set OUT=%~dp0..\..\..\USB_run\bin
 if not exist "%OUT%" mkdir "%OUT%"
 set NVCC="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc.exe"
 set GEN=-gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89 -gencode=arch=compute_90,code=sm_90 -gencode=arch=compute_120,code=sm_120 -gencode=arch=compute_120,code=compute_120
