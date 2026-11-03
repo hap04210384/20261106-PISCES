@@ -1,0 +1,22 @@
+probe	value	unit
+gpu_name	NVIDIA GeForce RTX 3060 Ti	
+compute_capability	8.6	
+sm_count	38	
+clock_rate_mhz	1665	
+mem_clock_rate_mhz	7001	
+mem_bus_width_bit	256	
+mem_total_gb	8.0	
+driver_version	13040	
+l2_cache_mb	3.0	
+fp32_peak_tflops	12.12	TFLOPS
+fp16_mma_tflops	35.66	TFLOPS
+int8_mma_tops	141.87	TOPS
+fp8_mma_tflops	skip_cc<89	
+b1_bmma_tops	575.76	TOPS(AND+POPC bit-ops)
+hbm_bandwidth_gbs	402.7	GB/s
+spec_ref	RTX 3060 Ti fp32=16.2TF bw=448GB/s	(public spec)
+ratio_fp32_of_spec	0.748	
+ratio_bw_of_spec	0.899	
+tensor_health_fp16	1.177	(unlocked ~1.0)
+tensor_health_int8	1.232	(unlocked ~1.0)
+lock_verdict	NO-LOCK-INDICATED (tensor paths at silicon-normal level)	(indicative only, not authoritative)

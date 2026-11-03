@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Embed Figures 2-4 (EMF) and Nature-style Tables 2-6 into Manuscript.docx.
+"""Embed Figures 2-4 (EMF) and journal-style Tables 2-6 into Manuscript.docx.
 Display items go into the single-column stretch that already holds Table 1
 (before the sectPr paragraph preceding 'Methods'). Prose is updated to cite them.
 """
@@ -9,8 +9,9 @@ from docx.oxml import parse_xml, OxmlElement
 from docx.opc.part import Part
 from docx.opc.packuri import PackURI
 from docx.opc.constants import RELATIONSHIP_TYPE as RT
+import os
 
-ROOT = r'E:\20261031-paper-Tensor core solves big problems\Manuscript_work'
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DOC = ROOT + r'\Manuscript.docx'
 FIG = ROOT + r'\figures\emf'
 

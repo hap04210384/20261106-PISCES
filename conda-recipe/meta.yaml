@@ -1,0 +1,38 @@
+{% set name = "gbm-tools" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+  run:
+    - python >=3.9    # data-preparation helpers (h5_to_gbm1.py, pangbank_to_gbm1.py)
+
+test:
+  requires:
+    - python >=3.9
+  commands:
+    - gbm_count --selftest 64 128 42
+    - gbm_stats --randtables
+    - python {{ SRC_DIR }}/tests/smoke_test.py {{ PREFIX }}/bin
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: "Exact all-pairs co-occurrence mining on genome x gene-family presence/absence bitmaps (AVX2 CPU engines)."
+  description: |
+    Standalone console engines for exact pair-level co-occurrence counting
+    (gbm_count), Fisher/BH statistics (gbm_stats), planted-benchmark simulation
+    (gbm_sim) and a MinHash-LSH approximate prefilter baseline (gbm_approx).
+    No CUDA required; the tensor-core GPU engines are built separately from the
+    same source tree (see Dockerfile.gpu in the repository).
+  dev_url: "set to the public repository URL when the code is published"

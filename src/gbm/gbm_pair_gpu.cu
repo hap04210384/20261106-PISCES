@@ -6,7 +6,7 @@
 // The host-side hypergeometric screen replicates gbm_count.cpp bit-for-bit
 // (same expression order, IEEE double, no fast-math) so the emitted TSV is
 // byte-identical to the AVX2 CPU reference.
-// Part of the Nature Methods submission reproducibility package.
+// Part of the reproducibility package for the associated study.
 // Author: YalongZhang
 //
 // Modes:

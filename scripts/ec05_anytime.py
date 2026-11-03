@@ -3,8 +3,9 @@
 # a byte-exact prefix of the full deterministic output; (2) slice concat must equal
 # the full output (kill-resume compositionality).
 import subprocess, time, hashlib, os, sys
+import os
 
-MW = r"E:\20261031-paper-Tensor core solves big problems\Manuscript_work"
+MW = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 EXE = MW + r"\code\src\gbm\gbm_count.exe"
 IN = MW + r"\data\processed\eco615_gbm1.txt"
 PD = MW + r"\data\processed"

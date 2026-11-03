@@ -4,7 +4,7 @@
 # record pyseer's p for the literature-documented partner B.
 import os, subprocess, time
 
-MW = r"E:\20261031-paper-Tensor core solves big problems\Manuscript_work"
+MW = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PD = MW + r"\data\processed"
 WD = PD + r"\ee01"
 PY = MW + r"\code\envs\pyseer-env\Scripts\python.exe"

@@ -1,0 +1,38 @@
+# GBM GPU engine build (CUDA 12.x, tensor-core router + pair census + probe).
+# Requires a machine with an NVIDIA GPU and the NVIDIA container runtime:
+#   docker build -f Dockerfile.gpu -t gbm-gpu .
+#   docker run --rm --gpus all gbm-gpu           (builds engines + runs smoke test)
+#   docker run --rm --gpus all -it gbm-gpu bash  (engines in /opt/gbm/bin)
+#
+# The router fat binary targets sm_86/89/90/120 plus PTX JIT fallback, so a
+# single image runs on Ampere, Ada Lovelace, Hopper and Blackwell consumer
+# and datacenter cards.
+FROM nvidia/cuda:12.8-devel-ubuntu24.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python3 ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/gbm
+COPY src/gbm/gbm_router.cu src/gbm/gbm_pair_gpu.cu src/gbm/gpu_probe.cu \
+     src/gbm/gbm_count.cpp src/gbm/gbm_stats.cpp src/gbm/gbm_sim.cpp src/gbm/gbm_approx.cpp \
+     /opt/gbm/src/
+COPY tests/smoke_test.py /opt/gbm/tests/smoke_test.py
+
+ENV GEN="-gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89 -gencode=arch=compute_90,code=sm_90 -gencode=arch=compute_120,code=sm_120 -gencode=arch=compute_120,code=compute_120"
+
+RUN mkdir -p bin \
+ && nvcc -O3 -DNDEBUG -std=c++17 $GEN -Xcompiler "-O3 -mavx2" -cudart=static \
+        -o bin/gbm_router    src/gbm_router.cu \
+ && nvcc -O3 -DNDEBUG -std=c++17 $GEN -Xcompiler "-O3" -cudart=static \
+        -o bin/gbm_pair_gpu  src/gbm_pair_gpu.cu \
+ && nvcc -O3 -DNDEBUG -std=c++17 $GEN -Xcompiler "-O3" -cudart=static \
+        -o bin/gpu_probe     src/gpu_probe.cu \
+ && g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_count  src/gbm_count.cpp \
+ && g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_stats src/gbm_stats.cpp \
+ && g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_sim    src/gbm_sim.cpp \
+ && g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_approx src/gbm_approx.cpp
+
+RUN python3 tests/smoke_test.py bin
+
+CMD ["python3", "tests/smoke_test.py", "bin"]

@@ -5,8 +5,9 @@
 # and check empirical FPR against nominal levels.
 import subprocess, time, os
 import numpy as np
+import os
 
-MW = r"E:\20261031-paper-Tensor core solves big problems\Manuscript_work"
+MW = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PD = MW + r"\data\processed"
 EXE = MW + r"\code\src\gbm\gbm_pair_gpu.exe"
 STATS = MW + r"\code\src\gbm\gbm_stats.exe"

@@ -4,10 +4,11 @@
 import sys, time
 import numpy as np
 import h5py, hdf5plugin
+import os
 
 K = 11
 START, END = int(sys.argv[1]), int(sys.argv[2])
-MW = r"E:\20261031-paper-Tensor core solves big problems\Manuscript_work"
+MW = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 H5 = MW + r"\data\raw\pangbank\eco615.h5"
 RF = MW + r"\data\raw\resfinder\rfdb\all.fsa"
 MAP = MW + r"\data\processed\eco615_fam_rep.tsv"

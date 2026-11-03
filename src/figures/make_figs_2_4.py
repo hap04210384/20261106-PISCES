@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Figures 2-4 for the manuscript (Nature Methods, double column 183 mm).
+"""Figures 2-4 for the manuscript (double column, 183 mm).
 Output: fig2_scaling.svg, fig3_planted.svg, fig4_baselines.svg (-> EMF via soffice).
 All text Arial 7pt, grayscale-safe.
 Data sources: tables/*.csv (E-C01/E-D01/E-D02/E-F05/E-B09/E-A01-GPU runs).

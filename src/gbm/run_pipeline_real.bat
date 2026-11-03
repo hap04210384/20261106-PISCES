@@ -3,7 +3,7 @@ rem E-B02/E-B03/E-B04/E-B05 real-data pipeline for K. pneumoniae pangenome (id 1
 rem Runs: h5 -> GBM1 matrix -> bitmap indexing -> all-pairs exact count (minc=5, depletion rule) -> stats (Fisher + BH-FDR)
 rem All experiment stages execute in C++ Release builds (AVX2). Python is used only for data conversion.
 setlocal
-set ROOT=E:\20261031-paper-Tensor core solves big problems\Manuscript_work
+set ROOT=%~dp0..\..\..
 set H5=%ROOT%\data\raw\pangbank\klebsiella_pneumoniae_refseq.h5
 set GBM1=%ROOT%\data\processed\kpn_gbm1.txt
 set PAIRS=%ROOT%\data\processed\kpn_pairs.tsv

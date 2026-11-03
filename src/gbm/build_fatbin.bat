@@ -1,0 +1,11 @@
+@echo off
+cd /d %~dp0
+call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" >nul
+set NVCC="C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin\nvcc.exe"
+set GEN=-gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89 -gencode=arch=compute_90,code=sm_90 -gencode=arch=compute_120,code=sm_120 -gencode=arch=compute_120,code=compute_120
+%NVCC% -O3 -DNDEBUG -std=c++17 %GEN% -Xcompiler /EHsc -o gbm_router.exe gbm_router.cu >build_router_fat.log 2>&1
+if errorlevel 1 (echo ROUTER-FAILED & type build_router_fat.log) else (echo ROUTER-OK)
+%NVCC% -O3 -DNDEBUG -std=c++17 %GEN% -Xcompiler /EHsc -o gbm_pair_gpu.exe gbm_pair_gpu.cu >build_pair_fat.log 2>&1
+if errorlevel 1 (echo PAIR-FAILED & type build_pair_fat.log) else (echo PAIR-OK)
+%NVCC% -O3 -DNDEBUG -std=c++17 %GEN% -Xcompiler /EHsc -o gpu_probe.exe gpu_probe.cu >build_probe.log 2>&1
+if errorlevel 1 (echo PROBE-FAILED & type build_probe.log) else (echo PROBE-OK)

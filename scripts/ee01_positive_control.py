@@ -4,8 +4,9 @@
 # level, and must rank at the top of 29.9M tested pairs.
 import time
 from scipy.stats import fisher_exact
+import os
 
-MW = r"E:\20261031-paper-Tensor core solves big problems\Manuscript_work"
+MW = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PD = MW + r"\data\processed"
 N_GENOMES = 2006
 M = 58774

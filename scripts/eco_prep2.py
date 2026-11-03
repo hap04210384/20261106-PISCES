@@ -2,8 +2,9 @@
 # eco_prep2.py - family -> rep gene map, preferring non-fragment members.
 import h5py, hdf5plugin, time
 import numpy as np
+import os
 
-MW = r"E:\20261031-paper-Tensor core solves big problems\Manuscript_work"
+MW = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 H5 = MW + r"\data\raw\pangbank\eco615.h5"
 OUT = MW + r"\data\processed\eco615_fam_rep.tsv"
 

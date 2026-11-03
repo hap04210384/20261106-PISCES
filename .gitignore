@@ -1,11 +1,24 @@
-# local environments and downloaded toolchains (not for GitHub)
-envs/
-# vendored TPDS substrate keeps its own git history; not duplicated here
-vendor/
-# build artifacts
-*.exe
+# Build artifacts (reviewers rebuild from source; see Dockerfile and build_*.bat)
 *.obj
-*.log
-__pycache__/
+*.exe
+*.pdb
+*.ilk
 *.exp
 *.lib
+build*.log
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Local environments (rebuild via envs/ recipes)
+envs/pyseer-env/
+envs/cuda-pip/
+
+# OS noise
+Thumbs.db
+.DS_Store
+
+# Local release artifacts (ship via GitHub Releases, not git)
+dist/
+envs/pyseer-1.3.11/
+envs/pyseer-src.tar.gz

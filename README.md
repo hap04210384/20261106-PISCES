@@ -13,11 +13,23 @@ Author: YalongZhang (ylzhang@qzc.edu.cn)
   exclusion / conditional) and permutation-null verification. Modes: `--plant`, `--permnull`.
 - `src/gbm/gbm_approx.cpp` — MinHash-LSH approximate prefilter baseline (E-group comparison).
   Modes: `--lsh`, `--compare`.
+- `src/gbm/gbm_router.cu` — CUDA tensor-core (BMMA) counting engine with a measurement-driven
+  router that prices each enumeration wave on the matrix engine vs the SIMT engine and routes
+  it to the cheaper one (hysteresis + wave cap; byte-identical output on both paths).
+  Anti-monotone pruning and the hypergeometric deviation screen run in the same pass.
+- `src/gbm/gbm_pair_gpu.cu` — CUDA pair census (matrix engine only; timing/campaign binary).
+- `src/gbm/gpu_probe.cu` — FP32 / tensor-core / memory-bandwidth capability probe used to
+  calibrate the router cost table on a new GPU.
 - `src/gbm/h5_to_gbm1.py` — converts a PPanGGOLiN/PanGBank pangenome HDF5 file into the
   GBM1 text bitmap matrix (data preparation only; all experiments run in the C++ engines).
+- `src/gbm/pangbank_to_gbm1.py` — converts a PanGBank pangenome HDF5 (flat layout, blosc2
+  compression; requires `pip install hdf5plugin`) into the GBM1 text bitmap matrix.
 - `src/gbm/annotate_vfdb.py` — maps gene families to VFDB virulence factors (k-mer Jaccard).
-- `src/gbm/*.bat` — MSVC Release build scripts (`/O2 /arch:AVX2 /DNDEBUG`) and the
-  real-data end-to-end pipeline (`run_pipeline_real.bat`).
+- `src/gbm/*.bat` — MSVC Release build scripts (`/O2 /arch:AVX2 /DNDEBUG`); GPU builds:
+  `build_router.bat` (single-arch sm_86) and `build_fatbin.bat` (fat binary sm_86/89/90/120
+  + PTX JIT for gbm_router, gbm_pair_gpu, gpu_probe); `build_probe.bat` (probe fat binary);
+  `build_dist.bat` (static-runtime CPU pack into `dist/cpu-windows-x64/`, no MSVC runtime
+  DLLs needed); and the real-data end-to-end pipeline (`run_pipeline_real.bat`).
 
 ## Data availability
 
@@ -55,22 +67,39 @@ gbm_sim.exe --plant demo.txt planted.txt truth.tsv 10 10 10 7   # planted ground
 Build (Linux/macOS): `g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o gbm_count src/gbm/gbm_count.cpp`
 (same for `gbm_stats`, `gbm_sim`, `gbm_approx`).
 
+Build (GPU engines, any OS with CUDA 12.x): `nvcc -O3 -DNDEBUG -std=c++17
+-gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_89,code=sm_89
+-gencode=arch=compute_90,code=sm_90 -gencode=arch=compute_120,code=sm_120
+-gencode=arch=compute_120,code=compute_120 -o gbm_router src/gbm/gbm_router.cu`
+(same for `gbm_pair_gpu.cu`, `gpu_probe.cu`). The fat binary runs on Ampere, Ada
+Lovelace, Hopper and Blackwell cards; older architectures fall back to PTX JIT.
+On Windows, `src/gbm/build_fatbin.bat` builds all three engines at once.
+
+## Installation options
+
+- **Docker, CPU reference build** (AVX2, no CUDA): `docker build -t gbm . && docker run --rm gbm`.
+- **Docker, GPU build** (tensor-core engines, needs the NVIDIA container runtime):
+  `docker build -f Dockerfile.gpu -t gbm-gpu . && docker run --rm --gpus all gbm-gpu`.
+- **conda** (CPU engines): `conda build conda-recipe && conda install --use-local gbm-tools`.
+- **Prebuilt static Windows binaries** (no MSVC runtime needed): build with
+  `src/gbm/build_dist.bat`; output lands in `dist/cpu-windows-x64/`. Release zips
+  are attached to GitHub Releases when published.
+
 - **Tests**: `python3 tests/smoke_test.py <exe-dir>` — end-to-end checks
   (determinism, exactness against an independent recount, R-compatible Fisher
   p-values, planted-pair recoverability, depletion eligibility rule).
 - **Tutorial**: `tutorials/demo_walkthrough.ipynb` walks through the full pipeline
   on a synthetic matrix.
-- **Docker** (CPU reference build, AVX2): `docker build -t gbm . && docker run --rm gbm`.
 - **CI**: `.github/workflows/ci.yml` builds the engines and runs the smoke test
   on Linux (g++) and Windows (MSVC) for every push.
 
 ## Baselines
 
 pyseer (>=1.3.11, FE and LMM modes) and Scoary (1.1.4) are used as gene-level association
-baselines. They are standard open-source tools installed from their official repositories;
-please validate baseline runs on Linux/macOS (the Windows port used in early development
-required two compatibility patches to Scoary and stubs for pyseer's VCF/enet paths; see
-`../plans/03_实验fail记录.md`).
+baselines. They are standard open-source tools installed from their official repositories.
+Note for Windows users: the Windows port used in early development required two
+compatibility patches to Scoary and stubs for pyseer's VCF/enet paths; on Linux/macOS
+the stock releases work unchanged.
 
 ## License and attribution
 
