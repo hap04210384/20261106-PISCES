@@ -35,4 +35,11 @@ RUN mkdir -p bin \
 
 RUN python3 tests/smoke_test.py bin
 
+# Bundled synthetic demo: exact count + screen + Fisher, then truth check.
+COPY data/demo /opt/gbm/data/demo
+COPY demo /opt/gbm/demo
+RUN bin/gbm_count --count data/demo/demo_matrix.txt demo/out_demo_pairs.tsv 3 screen \
+ && bin/gbm_stats --pairs demo/out_demo_pairs.tsv demo/out_demo_stats.tsv \
+ && python3 demo/check_demo.py demo/out_demo_stats.tsv
+
 CMD ["python3", "tests/smoke_test.py", "bin"]

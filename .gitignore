@@ -22,3 +22,4 @@ Thumbs.db
 dist/
 envs/pyseer-1.3.11/
 envs/pyseer-src.tar.gz
+demo/out/

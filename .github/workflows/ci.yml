@@ -18,6 +18,8 @@ jobs:
           g++ -O3 -mavx2 -DNDEBUG -std=c++17 -o bin/gbm_approx src/gbm/gbm_approx.cpp
       - name: Smoke test
         run: python3 tests/smoke_test.py bin
+      - name: Demo pipeline (bundled synthetic dataset)
+        run: bash demo/run_demo.sh bin
 
   windows:
     runs-on: windows-latest
@@ -34,3 +36,6 @@ jobs:
           cl /O2 /EHsc /arch:AVX2 /DNDEBUG /std:c++17 /Fe:bin\gbm_approx.exe src\gbm\gbm_approx.cpp
       - name: Smoke test
         run: python tests/smoke_test.py bin
+      - name: Demo pipeline (bundled synthetic dataset)
+        shell: cmd
+        run: demo\run_demo.bat bin
