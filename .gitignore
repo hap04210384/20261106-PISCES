@@ -23,3 +23,8 @@ dist/
 envs/pyseer-1.3.11/
 envs/pyseer-src.tar.gz
 demo/out/
+
+# Large regenerated intermediates (kept locally, not in repo)
+src/gbm/slice_tmp/
+results/tb_ee02_N32768_cpu_ref.tsv
+results/tb_ee02_N32768_cpu_gpu_identical.tsv
