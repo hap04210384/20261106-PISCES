@@ -1,6 +1,8 @@
-# Gene Bitmap Mining (GBM) reproducibility code
+# PISCES — Population-scale Interaction Screening with Exact Statistics
 
-Exact pair-level co-occurrence mining on genome x gene-family presence/absence bitmaps.
+Gene Bitmap Mining (GBM) reproducibility code: exact pair-level co-occurrence mining
+on genome x gene-family presence/absence bitmaps. GBM is the counting engine of the
+PISCES framework (SIMT + tensor-core routes, bit-identical output).
 Author: YalongZhang (ylzhang@qzc.edu.cn)
 
 ## Contents
