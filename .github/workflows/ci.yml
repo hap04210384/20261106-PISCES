@@ -28,7 +28,9 @@ jobs:
       - name: Build engines (MSVC, AVX2)
         shell: cmd
         run: |
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          for /f "usebackq delims=" %%i in (`"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VSDIR=%%i"
+          if not defined VSDIR (echo ERROR: Visual Studio C++ toolset not found & exit /b 1)
+          call "%VSDIR%\VC\Auxiliary\Build\vcvars64.bat"
           mkdir bin
           cl /O2 /EHsc /arch:AVX2 /DNDEBUG /std:c++17 /Fe:bin\gbm_count.exe src\gbm\gbm_count.cpp
           cl /O2 /EHsc /arch:AVX2 /DNDEBUG /std:c++17 /Fe:bin\gbm_stats.exe src\gbm\gbm_stats.cpp

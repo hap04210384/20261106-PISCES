@@ -18,6 +18,11 @@
 #include <string>
 #include <vector>
 #include <random>
+#if defined(_MSC_VER)
+#define POPCNT64(x) __popcnt64(x)
+#else
+#define POPCNT64(x) __builtin_popcountll(x)
+#endif
 #include <algorithm>
 using namespace std;
 
@@ -62,7 +67,7 @@ static bool save(Mat& m, const char* path) {
     fclose(f); return true;
 }
 static uint64_t support(Mat& m, int j) {
-    uint64_t s = 0; for (int w = 0; w < m.words; w++) s += (uint64_t)__popcnt64(row(m, j)[w]);
+    uint64_t s = 0; for (int w = 0; w < m.words; w++) s += POPCNT64(row(m, j)[w]);
     return s;
 }
 

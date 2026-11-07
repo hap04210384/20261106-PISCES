@@ -17,6 +17,11 @@
 #include <unordered_map>
 #include <algorithm>
 #include <chrono>
+#if defined(_MSC_VER)
+#define POPCNT64(x) __popcnt64(x)
+#else
+#define POPCNT64(x) __builtin_popcountll(x)
+#endif
 using namespace std;
 
 static inline uint64_t sm64(uint64_t x) {
@@ -101,7 +106,7 @@ int main(int argc, char** argv) {
             int a = kv.second.first, b = kv.second.second;
             uint64_t c11 = 0;
             const uint64_t* ra = rowp(m, a); const uint64_t* rb = rowp(m, b);
-            for (int w = 0; w < m.words; w++) c11 += (uint64_t)__popcnt64(ra[w] & rb[w]);
+            for (int w = 0; w < m.words; w++) c11 += POPCNT64(ra[w] & rb[w]);
             int inter = 0;
             for (int k = 0; k < K; k++) if (sketch[a][k] == sketch[b][k]) inter++;
             double J = (double)inter / K;
