@@ -1,5 +1,5 @@
 // gbm_stats.cpp - Gene Bitmap Mining: pair-level statistics (E-B05) and E-A04 reference checks.
-// Author: YalongZhang
+// Author: DAPR
 //
 // Modes:
 //   gbm_stats --randtables K N seed out.csv        generate K random 2x2 tables (a b c d) with margins<=N

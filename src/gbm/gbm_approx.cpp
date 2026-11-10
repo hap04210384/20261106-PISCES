@@ -1,5 +1,5 @@
 // gbm_approx.cpp - E-B09 approximate baselines: MinHash-LSH prefilter vs exact.
-// Author: YalongZhang
+// Author: DAPR
 //
 // Modes:
 //   gbm_approx --lsh in.txt out_pairs.tsv K B R

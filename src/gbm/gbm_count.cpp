@@ -1,7 +1,7 @@
 // gbm_count.cpp - Gene Bitmap Mining: all-pairs exact co-occurrence counting
 // Genome x gene-family presence/absence bitmap engine (AVX2, Release).
 // Part of the reproducibility package for the associated study.
-// Author: YalongZhang
+// Author: DAPR
 //
 // Modes:
 //   gbm_count --gen N M seed out.txt          generate random 0/1 matrix (families x genomes)

@@ -1,5 +1,5 @@
 // gbm_sim.cpp - Simulation: E-B08 ground-truth planting + E-A05 permutation-null verification.
-// Author: YalongZhang
+// Author: DAPR
 //
 // Modes:
 //   gbm_sim --plant in.txt out.txt truth.tsv K_cooc K_mutex K_cond seed

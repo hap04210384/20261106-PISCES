@@ -7,7 +7,7 @@
 // (same expression order, IEEE double, no fast-math) so the emitted TSV is
 // byte-identical to the AVX2 CPU reference.
 // Part of the reproducibility package for the associated study.
-// Author: YalongZhang
+// Author: DAPR
 //
 // Modes:
 //   gbm_pair_gpu --count in.txt out.tsv [capacity_entries]

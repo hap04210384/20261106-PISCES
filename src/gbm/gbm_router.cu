@@ -9,7 +9,7 @@
 // the emitted set and the sorted TSV are byte-identical for every routing
 // decision (route-independence).
 // Part of the reproducibility package for the associated study.
-// Author: YalongZhang
+// Author: DAPR
 //
 // Modes:
 //   gbm_router --count in.txt out.tsv [capacity] [flags]
