@@ -116,7 +116,7 @@ for txt in refs:
     print("ok ref:", txt[:20])
 
 cp = d.core_properties
-cp.author = "YalongZhang"
-cp.last_modified_by = "YalongZhang"
+cp.author = "DAPR"
+cp.last_modified_by = "DAPR"
 d.save(PATH)
 print("ALL REFS OK")

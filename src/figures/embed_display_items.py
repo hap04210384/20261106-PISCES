@@ -267,7 +267,7 @@ append_to_para(para_by_prefix('Applying the pipeline to the quality-filtered'),
     'locus emerges as a coherent module: its anchor family is recovered together with its biosynthetic and '
     'transport partners at odds ratios up to 10^6 (Table 6).')
 
-doc.core_properties.author = 'Yalong Zhang'
-doc.core_properties.last_modified_by = 'Yalong Zhang'
+doc.core_properties.author = 'DAPR'
+doc.core_properties.last_modified_by = 'DAPR'
 doc.save(DOC)
 print('embedded: %d blocks' % len(blocks))

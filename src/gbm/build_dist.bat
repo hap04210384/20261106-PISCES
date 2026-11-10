@@ -1,5 +1,5 @@
 @echo off
-rem Static-runtime CPU pack build (dist\cpu-windows-x64). YalongZhang.
+rem Static-runtime CPU pack build (dist\cpu-windows-x64). DAPR.
 cd /d %~dp0
 call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat" >nul
 if not exist ..\..\dist\cpu-windows-x64 mkdir ..\..\dist\cpu-windows-x64

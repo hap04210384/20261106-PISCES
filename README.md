@@ -3,7 +3,6 @@
 Gene Bitmap Mining (GBM) reproducibility code: exact pair-level co-occurrence mining
 on genome x gene-family presence/absence bitmaps. GBM is the counting engine of the
 PISCES framework (SIMT + tensor-core routes, bit-identical output).
-Author: YalongZhang (ylzhang@qzc.edu.cn)
 
 ## Contents
 
@@ -22,6 +21,11 @@ Author: YalongZhang (ylzhang@qzc.edu.cn)
 - `src/gbm/gbm_pair_gpu.cu` — CUDA pair census (matrix engine only; timing/campaign binary).
 - `src/gbm/gpu_probe.cu` — FP32 / tensor-core / memory-bandwidth capability probe used to
   calibrate the router cost table on a new GPU.
+- `src/gbm/to_gbm1.py` — generic encoder from any presence/absence input to GBM1:
+  plain CSV/TSV matrices (features x genomes), roary `gene_presence_absence.csv`,
+  Panaroo `gene_presence_absence.Rtab`, and two-column long lists; format is
+  auto-detected (`--style` to force). Deterministic: the same input always yields
+  byte-identical GBM1.
 - `src/gbm/h5_to_gbm1.py` — converts a PPanGGOLiN/PanGBank pangenome HDF5 file into the
   GBM1 text bitmap matrix (data preparation only; all experiments run in the C++ engines).
 - `src/gbm/pangbank_to_gbm1.py` — converts a PanGBank pangenome HDF5 (flat layout, blosc2
@@ -53,6 +57,16 @@ source pangenome file are NOT redistributed here. To reproduce:
    pangenome of Klebsiella pneumoniae (2001 genomes, 54590 gene families).
 2. Convert with `python src/gbm/h5_to_gbm1.py <pangenome.h5> <matrix.txt>`.
 3. Run the pipeline (`run_pipeline_real.bat` shows the exact steps and parameters).
+
+**Any other input.** The engines consume a GBM1 presence/absence bitmap, and GBM1 is
+the only PISCES-specific format in the pipeline. Any tool that can emit a feature x
+genome presence/absence table can therefore feed the pipeline through
+`src/gbm/to_gbm1.py` — including standard pangenome toolchains (roary, Panaroo,
+PPanGGOLiN/PanGBank via the HDF5 converters above) or a hand-built CSV/TSV matrix.
+Encoding is a one-pass linear, deterministic step: the same input table always
+produces byte-identical GBM1, so results do not depend on how the bitmap was
+produced. See `src/gbm/to_gbm1.py --help` (header docstring) for the accepted
+layouts and the auto-detection rules.
 
 VFDB virulence factor database: http://www.mgc.ac.cn/VFs/ (VFDB_setA_pro).
 ResFinder resistance database: https://bitbucket.org/genomicepidemiology/resfinder_db
@@ -115,5 +129,4 @@ the stock releases work unchanged.
 
 ## License and attribution
 
-MIT (see LICENSE). If you use this code, cite the associated study and credit
-YalongZhang as the author.
+MIT (see LICENSE). If you use this code, please cite the associated study.

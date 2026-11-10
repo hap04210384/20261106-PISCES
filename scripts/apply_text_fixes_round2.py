@@ -160,8 +160,8 @@ append_to_para(d.paragraphs[115],
     "E10 Methods additions")
 
 cp = d.core_properties
-cp.author = "YalongZhang"
-cp.last_modified_by = "YalongZhang"
+cp.author = "DAPR"
+cp.last_modified_by = "DAPR"
 try:
     cp.comments = ""
 except Exception:
