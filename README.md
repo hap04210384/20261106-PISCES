@@ -4,6 +4,13 @@ Gene Bitmap Mining (GBM) reproducibility code: exact pair-level co-occurrence mi
 on genome x gene-family presence/absence bitmaps. GBM is the counting engine of the
 PISCES framework (SIMT + tensor-core routes, bit-identical output).
 
+The engines are also a **standalone tool**: any feature-by-sample
+presence/absence table (microbial gene families, GWAS variants, protein
+domains, binarized k-mers, ...) can be screened for exactly tested,
+multiplicity-controlled pairwise associations — see
+[Using PISCES on your own data](tutorials/your_own_data.md) and the
+one-command entry point `pisces_run.bat` / `pisces_run.sh`.
+
 ## Contents
 
 - `src/gbm/gbm_count.cpp` — all-pairs exact co-occurrence counting (AVX2, Release).
@@ -97,6 +104,25 @@ Build (GPU engines, any OS with CUDA 12.x): `nvcc -O3 -DNDEBUG -std=c++17
 (same for `gbm_pair_gpu.cu`, `gpu_probe.cu`). The fat binary runs on Ampere, Ada
 Lovelace, Hopper and Blackwell cards; older architectures fall back to PTX JIT.
 On Windows, `src/gbm/build_fatbin.bat` builds all three engines at once.
+
+## Using PISCES on your own data
+
+`pisces_run.bat` (Windows) / `pisces_run.sh` (Linux/macOS) runs the full
+pipeline in one command — encode any presence/absence table (roary, Panaroo,
+PPanGGOLiN/PanGBank HDF5, plain CSV/TSV, two-column long list), count all
+pairs exactly, and emit a candidate table with odds ratio, two-sided Fisher
+exact p and BH-FDR:
+
+```
+pisces_run.bat gene_presence_absence.csv my_run        # Windows
+./pisces_run.sh gene_presence_absence.Rtab my_run      # Linux/macOS
+```
+
+Output `my_run/candidates.tsv`: `famA famB c11 c10 c01 c00 odds_ratio p_fisher
+padj_BH_screened padj_BH_allpairs rank`; filter `padj_BH_allpairs < 0.05` for
+the conservative call set. A worked roary-to-candidates walkthrough, the input
+formats accepted by the encoder, and the scope of applicable feature types are
+in [tutorials/your_own_data.md](tutorials/your_own_data.md).
 
 ## Installation options
 
