@@ -2,15 +2,20 @@
 rem E-B02/E-B03/E-B04/E-B05 real-data pipeline for K. pneumoniae pangenome (id 11756)
 rem Runs: h5 -> GBM1 matrix -> bitmap indexing -> all-pairs exact count (minc=5, depletion rule) -> stats (Fisher + BH-FDR)
 rem All experiment stages execute in C++ Release builds (AVX2). Python is used only for data conversion.
+rem
+rem Prerequisite: download the pangenome HDF5 from PanGBank (public, no auth):
+rem   https://pangbank-api.genoscope.cns.fr/pangenomes/11756/file
+rem and place it at data\raw\pangbank\klebsiella_pneumoniae_refseq.h5 (relative to the repo root).
+rem Build the engines first: build_gbm.bat, build_stats.bat (gbm_count.exe / gbm_stats.exe must be in this directory).
 setlocal
 set ROOT=%~dp0..\..\..
 set H5=%ROOT%\data\raw\pangbank\klebsiella_pneumoniae_refseq.h5
 set GBM1=%ROOT%\data\processed\kpn_gbm1.txt
 set PAIRS=%ROOT%\data\processed\kpn_pairs.tsv
-set CAND=%ROOT%\tables\tb_eb05_candidate_table.tsv
-set PY=C:\Users\Lenovo\AppData\Roaming\kimi-desktop\daimon-share\daimon\runtime\python\cpython-3.12\python.exe
+set CAND=%ROOT%\results\tb_eb05_candidate_table.tsv
+set PY=python
 
-cd /d %ROOT%\code\src\gbm
+cd /d %~dp0
 
 echo [1/4] h5 -> GBM1
 %PY% h5_to_gbm1.py "%H5%" "%GBM1%" || exit /b 1
